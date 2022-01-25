@@ -29,18 +29,22 @@ model Idea {
   
   votes Vote[]
   
-  user User @relation(fields: [userId], references: [id])
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId Int
 }
 
-model Vote {
-  id Int @default(autoincrement()) @id
 
-  user User @relation(fields: [userId], references: [id])
+model Vote {
+  @@unique(fields: [userId, ideaId], name : "voteId")
+
+  voteType Boolean // Defines if its an "upvote" or "downvote"
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade) 
   userId Int
 
-  idea Idea @relation(fields: [ideaId], references: [id])
+  idea Idea @relation(fields: [ideaId], references: [id], onDelete: Cascade)
   ideaId Int
 
+  
 
 }
