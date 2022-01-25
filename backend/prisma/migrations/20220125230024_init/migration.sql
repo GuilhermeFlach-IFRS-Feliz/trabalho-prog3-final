@@ -5,4 +5,4 @@
 
 */
 -- AlterTable
-ALTER TABLE `vote` ADD COLUMN `type` BOOLEAN NOT NULL;
+ALTER TABLE `Vote` ADD COLUMN `type` BOOLEAN NOT NULL;

@@ -8,7 +8,7 @@
 
 */
 -- AlterTable
-ALTER TABLE `vote` DROP COLUMN `type`,
+ALTER TABLE `Vote` DROP COLUMN `type`,
     ADD COLUMN `voteType` BOOLEAN NOT NULL;
 
 -- CreateIndex

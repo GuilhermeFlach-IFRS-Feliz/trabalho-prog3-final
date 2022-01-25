@@ -7,7 +7,7 @@
 
 */
 -- AlterTable
-ALTER TABLE `vote` DROP PRIMARY KEY,
+ALTER TABLE `Vote` DROP PRIMARY KEY,
     DROP COLUMN `id`;
 
 -- CreateIndex
