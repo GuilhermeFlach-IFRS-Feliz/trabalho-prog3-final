@@ -1,13 +1,16 @@
 import express from "express";
+import cors from "cors";
 
-import { PrismaClient } from "@prisma/client";
 import router from "./routes";
 
 
 const app = express();
+app.use(cors());
 app.use(express.json());
 
 import cookieparser from "cookie-parser";
+import { PrismaClient } from "@prisma/client";
+
 app.use(cookieparser("muito secreto, confia"));
 
 const prisma = new PrismaClient();

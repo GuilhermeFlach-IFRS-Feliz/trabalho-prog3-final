@@ -33,6 +33,13 @@ router.get("/find/:id", async (req, res) => {
       where: {
         id: id,
       },
+      include: {
+        votes: {
+          where : {
+            userId : Number(req.signedCookies.userId)
+          }
+        }
+      },
     });
 
     // Return the selected user
@@ -65,7 +72,13 @@ router.delete("/:id", async (req, res) => {
 router.get("/best", async (req, res) => {
   try {
     const ideasList = await prisma.idea.findMany({
-
+      include: {
+        votes: {
+          where : {
+            userId : Number(req.signedCookies.userId)
+          }
+        }
+      }
     });
 
     
@@ -80,14 +93,19 @@ router.get("/best", async (req, res) => {
 });
 
 // list all ideas (sort by date)
-router.get("/lastest", async (req, res) => {
+router.get("/latest", async (req, res) => {
   try {
     const ideasList = await prisma.idea.findMany({
-      orderBy: [
-        {
-          date: "desc",
-        },
-      ],
+      orderBy: {
+        date: "desc",
+      },
+      include: {
+        votes: {
+          where : {
+            userId : Number(req.signedCookies.userId)
+          }
+        }
+      },
     });
 
     console.table(ideasList);
@@ -103,14 +121,6 @@ router.get("/lastest", async (req, res) => {
 router.get("/worst", async (req, res) => {
   try {
     const ideasList = await prisma.idea.findMany({
-       orderBy : [
-         {
-           votes : {
-             
-           }
-         }
-
-       ],
       include: {
         votes: {
           where : {
