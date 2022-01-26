@@ -19,7 +19,7 @@ const Ideas = () => {
   return (
     <>
       {ideas.length &&
-        ideas.map((idea) => <Idea key={idea.id} self={idea}></Idea>)}
+        ideas.map((idea) => <Idea key={idea.ideaData.id} self={idea}></Idea>)}
     </>
   );
 };

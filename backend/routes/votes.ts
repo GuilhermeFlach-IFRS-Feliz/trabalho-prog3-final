@@ -8,12 +8,18 @@ const prisma = new PrismaClient();
 // Cast vote (Create if not exists)
 router.post("/cast", async (req, res) => {
   try {
-    const { userId, ideaId, voteType } = req.body;
+    // TODO: colocar esse check em uma função/arquivo separado
+    if (!req.signedCookies.userId) {
+      res.status(401).json("Not logged in!");
+      return;
+    }
+    
+    const { ideaId, voteType } = req.body;
 
     const castVote = await prisma.vote.upsert({
       where: {
         voteId: {
-          userId: Number(userId),
+          userId: Number(req.signedCookies.userId),
           ideaId: Number(ideaId),
         },
       },
@@ -23,7 +29,7 @@ router.post("/cast", async (req, res) => {
       },
 
       create: {
-        userId: Number(userId),
+        userId: Number(req.signedCookies.userId),
         ideaId: Number(ideaId),
         voteType: Boolean(voteType),
       },
@@ -37,14 +43,20 @@ router.post("/cast", async (req, res) => {
 });
 
 // Delete vote
-router.delete("/:userId/:ideaId", async (req, res) => {
+router.delete("/:ideaId", async (req, res) => {
   try {
-    const {userId, ideaId} = req.params;
+    // TODO: colocar esse check em uma função/arquivo separado
+    if (!req.signedCookies.userId) {
+      res.status(401).json("Not logged in!");
+      return;
+    }
+
+    const {ideaId} = req.params;
 
     const deletedVote = await prisma.vote.delete({
       where: {
         voteId: {
-          userId: Number(userId),
+          userId: Number(req.signedCookies.userId),
           ideaId: Number(ideaId),
         },
       },

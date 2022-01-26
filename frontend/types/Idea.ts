@@ -1,10 +1,16 @@
-import Vote from "./Vote";
-
 export default interface Idea {
-  id: number;
-  title: string;
-  text: string;
-  date: Date;
-  votes?: Vote[];
-  userId: number;
+  ideaData : {
+    id: number;
+    title: string;
+    text: string;
+    date: Date;
+    user : {
+      username: string
+    }
+  },
+  voteData : {
+    voteType?: boolean,
+    upvotes : number,
+    downvotes : number,
+  }
 }

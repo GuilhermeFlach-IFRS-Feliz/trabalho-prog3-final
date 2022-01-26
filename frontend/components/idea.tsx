@@ -1,19 +1,21 @@
+import { getCookieParser } from "next/dist/server/api-utils";
 import { castVote } from "../helpers/votes";
 import Idea from "../types/Idea";
 
 const Idea = ({ self }: Props) => {
-  const vote = self.votes ? self.votes[0].voteType : undefined;
+
+  const vote = (self.voteData && self.voteData.voteType) ? self.voteData.voteType: undefined;
 
   async function Vote(type: boolean) {
     if (type === vote) return;
 
-    castVote(type, self.id);
+    castVote(type, self.ideaData.id);
   }
 
   return (
     <div>
-      <p>{self.title}</p>
-      <p>{self.text}</p>
+      <p>{self.ideaData.title}</p>
+      <p>{self.ideaData.text}</p>
       <button
         onClick={() => Vote(true)}
         style={vote ? { backgroundColor: "blue" } : {}}
