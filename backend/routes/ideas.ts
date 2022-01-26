@@ -76,7 +76,7 @@ router.get("/best", async (req, res) => {
 });
 
 // list all ideas (sort by date)
-router.get("/lastest", async (req, res) => {
+router.get("/latest", async (req, res) => {
   try {
     const ideasList = await prisma.idea.findMany({
       orderBy: [
