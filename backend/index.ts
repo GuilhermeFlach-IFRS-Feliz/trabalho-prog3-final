@@ -3,8 +3,12 @@ import express from "express";
 import { PrismaClient } from "@prisma/client";
 import router from "./routes";
 
+
 const app = express();
 app.use(express.json());
+
+import cookieparser from "cookie-parser";
+app.use(cookieparser("muito secreto, confia"));
 
 const prisma = new PrismaClient();
 
