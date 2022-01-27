@@ -39,8 +39,8 @@ router.get("/debug", async (req, res) => {
 
     if (fetchedLogin) {
       res.cookie("userId", fetchedLogin.id, { signed: true });
-      res.cookie("username", fetchedLogin.username, { signed: true });
-      res.cookie("email", fetchedLogin.email, { signed: true });
+      res.cookie("username", fetchedLogin.username);
+      res.cookie("email", fetchedLogin.email);
       console.log(fetchedLogin);
       res.status(200).json("Login bem sucedido!");
     } else {
