@@ -4,7 +4,9 @@ import Idea from "../types/Idea";
 
 const Idea = ({ self }: Props) => {
 
-  const vote = (self.voteData && self.voteData.voteType) ? self.voteData.voteType: undefined;
+  const vote = self.voteData ? self.voteData.voteType: undefined;
+
+  console.log(self.voteData)
 
   async function Vote(type: boolean) {
     if (type === vote) return;
@@ -18,12 +20,12 @@ const Idea = ({ self }: Props) => {
       <p>{self.ideaData.text}</p>
       <button
         onClick={() => Vote(true)}
-        style={vote ? { backgroundColor: "blue" } : {}}
+        style={vote === true ? { backgroundColor: "blue" } : {}}
       >
         Like
       </button>
       <button
-        onClick={() => Vote(false)}
+        onClick={() => {Vote(false); console.log(vote)}}
         style={vote === false ? { backgroundColor: "red" } : {}}
       >
         Dislike

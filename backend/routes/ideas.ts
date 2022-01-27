@@ -67,7 +67,7 @@ router.get("/find/:id", async (req, res) => {
     });
 
     // Check to see if the user voted on that idea
-    const voteType = await prisma.vote.findUnique({
+    const vote = await prisma.vote.findUnique({
       where: {
         voteId: {
           userId: Number(req.signedCookies.userId),
@@ -83,7 +83,7 @@ router.get("/find/:id", async (req, res) => {
     const returnedIdea = {
       ideaData: selectedIdea,
       voteData: {
-        voteType: voteType,
+        voteType: vote ? vote.voteType : undefined,
         upvotes: upvotes,
         downvotes: downvotes,
       },
@@ -200,7 +200,7 @@ router.get("/latest", async (req, res) => {
       });
 
       // Check to see if the user voted on that idea
-      const voteType = await prisma.vote.findUnique({
+      const vote = await prisma.vote.findUnique({
         where: {
           voteId: {
             userId: Number(req.signedCookies.userId),
@@ -212,11 +212,12 @@ router.get("/latest", async (req, res) => {
           voteType: true,
         },
       });
+      console.log(vote)
 
       const returnedIdea = {
         ideaData: selectedIdea,
         voteData: {
-          voteType: voteType,
+          voteType: vote ? vote.voteType : null,
           upvotes: upvotes,
           downvotes: downvotes,
         },
