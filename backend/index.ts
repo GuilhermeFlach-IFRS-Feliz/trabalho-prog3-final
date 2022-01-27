@@ -1,15 +1,14 @@
 import express from "express";
 import cors from "cors";
+import cookieparser from "cookie-parser";
+import { PrismaClient } from "@prisma/client";
 
 import router from "./routes";
 
-
 const app = express();
-app.use(cors());
+const frontUrl = process.env.frontUrl || "http://localhost:3000";
+app.use(cors({ credentials: true, origin: frontUrl })); //cant set cookies if origin is set to wildcard
 app.use(express.json());
-
-import cookieparser from "cookie-parser";
-import { PrismaClient } from "@prisma/client";
 
 app.use(cookieparser("muito secreto, confia"));
 

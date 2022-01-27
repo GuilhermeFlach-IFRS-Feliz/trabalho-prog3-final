@@ -8,31 +8,27 @@ const prisma = new PrismaClient();
 // Efeutar login
 router.post("/", async (req, res) => {
   try {
-    const {username, password} = req.body;
+    const { username, password } = req.body;
 
     const fetchedLogin = await prisma.user.findFirst({
-      where : {
-          username : username,
-          password : password
-      }
+      where: {
+        username: username,
+        password: password,
+      },
     });
 
-
     if (fetchedLogin) {
-      res.cookie("userId", fetchedLogin.id, {signed: true});
+      res.cookie("userId", fetchedLogin.id, { signed: true });
       res.cookie("username", fetchedLogin.username);
       res.cookie("email", fetchedLogin.email);
 
-      res.status(200).json("Login bem sucedido!")
-
+      res.status(200).json("Login bem sucedido!");
     } else {
-      res.status(401).json("Login inválido!")
+      res.status(401).json("Login inválido!");
     }
-
-  }
-  catch (e) {
-    console.log(e)
-    res.status(400).json("Erro!")
+  } catch (e) {
+    console.log(e);
+    res.status(400).json("Erro!");
   }
 });
 
@@ -42,21 +38,17 @@ router.get("/debug", async (req, res) => {
     const fetchedLogin = await prisma.user.findFirst();
 
     if (fetchedLogin) {
-      res.cookie("userId", fetchedLogin.id, {signed: true});
-      res.cookie("username", fetchedLogin.username, {signed: true});
-      res.cookie("email", fetchedLogin.email, {signed: true});
-
-      res.status(200).json("Login bem sucedido!")
+      res.cookie("userId", fetchedLogin.id, { signed: true });
+      res.cookie("username", fetchedLogin.username, { signed: true });
+      res.cookie("email", fetchedLogin.email, { signed: true });
+      console.log(fetchedLogin);
+      res.status(200).json("Login bem sucedido!");
+    } else {
+      res.status(401).json("Nenhum usuário cadastrado!");
     }
-    
-    else {
-      res.status(401).json("Nenhum usuário cadastrado!")
-    }
-
-  }
-  catch (e) {
-    console.log(e)
-    res.status(400).json("Erro!")
+  } catch (e) {
+    console.log(e);
+    res.status(400).json("Erro!");
   }
 });
 

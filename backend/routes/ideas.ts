@@ -1,20 +1,17 @@
 import { PrismaClient } from "@prisma/client";
 import { transformDocument } from "@prisma/client/runtime";
 import { Router } from "express";
+import { session } from "../middleware/session";
 
 const router = Router();
 
 const prisma = new PrismaClient();
 
+router.use(session);
+
 // Create Idea
 router.post("/create", async (req, res) => {
   try {
-    // TODO: colocar esse check em uma função/arquivo separado
-    if (!req.signedCookies.userId) {
-      res.status(401).json("Not logged in");
-      return;
-    }
-
     const { title, text, userId } = req.body;
     const idea = await prisma.idea.create({
       data: {
@@ -35,69 +32,62 @@ router.post("/create", async (req, res) => {
 // Read idea
 router.get("/find/:id", async (req, res) => {
   try {
-    // TODO: colocar esse check em uma função/arquivo separado
-    if (!req.signedCookies.userId) {
-      req.signedCookies.userId = 0;
-    }
-
     const id = Number(req.params.id);
     const selectedIdea = await prisma.idea.findUnique({
       where: {
         id: id,
       },
-      select : {
-        id : true,
-        title : true,
-        text : true,
-        date : true,
-        user : {
-          select : {
-            username : true
-          }
-        }
-      }
+      select: {
+        id: true,
+        title: true,
+        text: true,
+        date: true,
+        user: {
+          select: {
+            username: true,
+          },
+        },
+      },
     });
 
     // Count upvotes
     const upvotes = await prisma.vote.count({
-      where : {
-        ideaId : id,
-        voteType : true
-      }
-    })
+      where: {
+        ideaId: id,
+        voteType: true,
+      },
+    });
 
     // Count downvotes
     const downvotes = await prisma.vote.count({
-      where : {
-        ideaId : id,
-        voteType : false
-      }
-    })
+      where: {
+        ideaId: id,
+        voteType: false,
+      },
+    });
 
     // Check to see if the user voted on that idea
     const voteType = await prisma.vote.findUnique({
-      where : {
-        voteId : {
-          userId : Number(req.signedCookies.userId),
-          ideaId : id
+      where: {
+        voteId: {
+          userId: Number(req.signedCookies.userId),
+          ideaId: id,
         },
       },
-  
-      select : {
-        voteType : true,
-      }
+
+      select: {
+        voteType: true,
+      },
     });
 
     const returnedIdea = {
-      ideaData : selectedIdea,
-      voteData : {
-        voteType : voteType,
-        upvotes : upvotes,
-        downvotes : downvotes
-      }
-      
-    }
-    
+      ideaData: selectedIdea,
+      voteData: {
+        voteType: voteType,
+        upvotes: upvotes,
+        downvotes: downvotes,
+      },
+    };
 
     // Return the selected idea
     res.status(200).json(returnedIdea);
@@ -110,21 +100,15 @@ router.get("/find/:id", async (req, res) => {
 // Delete idea
 router.delete("/:ideaId", async (req, res) => {
   try {
-    // TODO: colocar esse check em uma função/arquivo separado
-    if (!req.signedCookies.userId) {
-      res.status(401).json("Not logged in!");
-      return;
-    }
-    
     const ideaId = Number(req.params.ideaId);
 
     // Check if it was the user who created that idea
     const isIdeaUserMade = await prisma.idea.findFirst({
-      where : {
-        id : ideaId,
-        userId : Number(req.signedCookies.userId)
-      }
-    })
+      where: {
+        id: ideaId,
+        userId: Number(req.signedCookies.userId),
+      },
+    });
 
     if (isIdeaUserMade) {
       const deletedIdea = await prisma.idea.delete({
@@ -132,14 +116,13 @@ router.delete("/:ideaId", async (req, res) => {
           id: ideaId,
         },
       });
-  
+
       // Return the deleted user
       res.status(200).json(deletedIdea);
       return;
     } else {
-      res.status(401).json("Idea was not created by this user!")
+      res.status(401).json("Idea was not created by this user!");
     }
-
   } catch (e) {
     res.status(400).json("Erro!");
     console.log(e);
@@ -149,30 +132,24 @@ router.delete("/:ideaId", async (req, res) => {
 // list all ideas (sort by popularity)
 router.get("/best", async (req, res) => {
   try {
-    // TODO: colocar esse check em uma função/arquivo separado
-    if (!req.signedCookies.userId) {
-      req.signedCookies.userId = 0;
-    }
-
     const ideasList = await prisma.vote.groupBy({
-      by : ['ideaId'],
+      by: ["ideaId"],
 
-      where : {
-        voteType : true
+      where: {
+        voteType: true,
       },
 
-      _count : {
-        ideaId : true
+      _count: {
+        ideaId: true,
       },
 
       orderBy: {
-        _count : {
-          ideaId : "desc"
-        }
+        _count: {
+          ideaId: "desc",
+        },
       },
     });
 
-    
     // Return the selected user
     res.status(200).json(ideasList);
   } catch (e) {
@@ -184,71 +161,66 @@ router.get("/best", async (req, res) => {
 // list all ideas (sort by date)
 router.get("/latest", async (req, res) => {
   try {
-    // TODO: colocar esse check em uma função/arquivo separado
-    if (!req.signedCookies.userId) {
-      req.signedCookies.userId = 0;
-    }
-
     const ideasList = await prisma.idea.findMany({
       orderBy: {
-        date : "desc",
+        date: "desc",
       },
-      select : {
-        id : true,
-        title : true,
-        text : true,
-        date : true,
-        user : {
-          select : {
-            username : true
-          }
-        }
+      select: {
+        id: true,
+        title: true,
+        text: true,
+        date: true,
+        user: {
+          select: {
+            username: true,
+          },
+        },
       },
     });
 
-    let returnedIdeasList = []
+    let returnedIdeasList = [];
 
     // Gather data from votes
     for (const i in ideasList) {
       const id = ideasList[i].id;
       const selectedIdea = ideasList[i];
       const upvotes = await prisma.vote.count({
-        where : {
-          ideaId : id,
-          voteType : true
-        }
-      })
-  
+        where: {
+          ideaId: id,
+          voteType: true,
+        },
+      });
+
       // Count downvotes
       const downvotes = await prisma.vote.count({
-        where : {
-          ideaId : id,
-          voteType : false
-        }
-      })
-  
+        where: {
+          ideaId: id,
+          voteType: false,
+        },
+      });
+
       // Check to see if the user voted on that idea
       const voteType = await prisma.vote.findUnique({
-        where : {
-          voteId : {
-            userId : Number(req.signedCookies.userId),
-            ideaId : id
-          }
+        where: {
+          voteId: {
+            userId: Number(req.signedCookies.userId),
+            ideaId: id,
+          },
         },
-  
-        select : {
-          voteType : true
-        }
+
+        select: {
+          voteType: true,
+        },
       });
-  
+
       const returnedIdea = {
-        ideaData : selectedIdea,
-        voteData : {
-          voteType : voteType,
-          upvotes : upvotes,
-          downvotes : downvotes
-        }
-      }
+        ideaData: selectedIdea,
+        voteData: {
+          voteType: voteType,
+          upvotes: upvotes,
+          downvotes: downvotes,
+        },
+      };
       returnedIdeasList.push(returnedIdea);
     }
 
@@ -264,18 +236,13 @@ router.get("/latest", async (req, res) => {
 // list all ideas (sort by worst)
 router.get("/worst", async (req, res) => {
   try {
-    // TODO: colocar esse check em uma função/arquivo separado
-    if (!req.signedCookies.userId) {
-      req.signedCookies.userId = 0;
-    }
-
     const ideasList = await prisma.idea.findMany({
       include: {
         votes: {
-          where : {
-            userId : Number(req.signedCookies.userId)
-          }
-        }
+          where: {
+            userId: Number(req.signedCookies.userId),
+          },
+        },
       },
     });
 
