@@ -10,14 +10,17 @@ const instance = axios.create({
 instance.interceptors.response.use(
   (response) => response,
   async (error) => {
+    const statusCode = error?.response?.status;
     //redirect unauthorized user to login page, uncomment later
-    // const statusCode = error?.response?.status;
     // if (statusCode === 401) Router.push("/login");
 
-    //get a userId cookie for debugging and retry, comment this out later
-    await instance.get("/login/debug");
-    const previousRequest = error.config;
-    return previousRequest ? instance.request(previousRequest) : undefined;
+    if (statusCode === 401) {
+      //get a userId cookie for debugging and retry, comment this out later
+      await instance.get("/login/debug");
+      const previousRequest = error.config;
+      return previousRequest ? instance.request(previousRequest) : undefined;
+    }
+    return error;
   }
 );
 
