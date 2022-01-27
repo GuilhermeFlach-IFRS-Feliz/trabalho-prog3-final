@@ -11,8 +11,3 @@
 ALTER TABLE `Vote` DROP COLUMN `type`,
     ADD COLUMN `voteType` BOOLEAN NOT NULL;
 
--- CreateIndex
-CREATE UNIQUE INDEX `Vote_userId_key` ON `Vote`(`userId`);
-
--- CreateIndex
-CREATE UNIQUE INDEX `Vote_ideaId_key` ON `Vote`(`ideaId`);

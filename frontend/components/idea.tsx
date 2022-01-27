@@ -25,7 +25,7 @@ const Idea = ({ self }: Props) => {
         Like
       </button>
       <button
-        onClick={() => {Vote(false); console.log(vote)}}
+        onClick={() => Vote(false)}
         style={vote === false ? { backgroundColor: "red" } : {}}
       >
         Dislike
