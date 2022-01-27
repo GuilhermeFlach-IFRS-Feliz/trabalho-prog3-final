@@ -6,8 +6,6 @@ const Idea = ({ self }: Props) => {
 
   const vote = self.voteData ? self.voteData.voteType: undefined;
 
-  console.log(self.voteData)
-
   async function Vote(type: boolean) {
     if (type === vote) return;
 

@@ -9,6 +9,66 @@ const prisma = new PrismaClient();
 
 router.use(session);
 
+async function getIdea (id : number, userId : number) {
+  const selectedIdea = await prisma.idea.findUnique({
+    where: {
+      id: id,
+    },
+    select: {
+      id: true,
+      title: true,
+      text: true,
+      date: true,
+      user: {
+        select: {
+          username: true,
+        },
+      },
+    },
+  });
+
+  // Count upvotes
+  const upvotes = await prisma.vote.count({
+    where: {
+      ideaId: id,
+      voteType: true,
+    },
+  });
+
+  // Count downvotes
+  const downvotes = await prisma.vote.count({
+    where: {
+      ideaId: id,
+      voteType: false,
+    },
+  });
+
+  // Check to see if the user voted on that idea
+  const vote = await prisma.vote.findUnique({
+    where: {
+      voteId: {
+        userId: userId,
+        ideaId: id,
+      },
+    },
+
+    select: {
+      voteType: true,
+    },
+  });
+
+  const returnedIdea = {
+    ideaData: selectedIdea,
+    voteData: {
+      voteType: vote ? vote.voteType : undefined,
+      upvotes: upvotes,
+      downvotes: downvotes,
+    },
+  };
+
+  return returnedIdea;
+}
+
 // Create Idea
 router.post("/create", async (req, res) => {
   try {
@@ -33,61 +93,8 @@ router.post("/create", async (req, res) => {
 router.get("/find/:id", async (req, res) => {
   try {
     const id = Number(req.params.id);
-    const selectedIdea = await prisma.idea.findUnique({
-      where: {
-        id: id,
-      },
-      select: {
-        id: true,
-        title: true,
-        text: true,
-        date: true,
-        user: {
-          select: {
-            username: true,
-          },
-        },
-      },
-    });
-
-    // Count upvotes
-    const upvotes = await prisma.vote.count({
-      where: {
-        ideaId: id,
-        voteType: true,
-      },
-    });
-
-    // Count downvotes
-    const downvotes = await prisma.vote.count({
-      where: {
-        ideaId: id,
-        voteType: false,
-      },
-    });
-
-    // Check to see if the user voted on that idea
-    const vote = await prisma.vote.findUnique({
-      where: {
-        voteId: {
-          userId: Number(req.signedCookies.userId),
-          ideaId: id,
-        },
-      },
-
-      select: {
-        voteType: true,
-      },
-    });
-
-    const returnedIdea = {
-      ideaData: selectedIdea,
-      voteData: {
-        voteType: vote ? vote.voteType : undefined,
-        upvotes: upvotes,
-        downvotes: downvotes,
-      },
-    };
+    const userId = Number(req.signedCookies.userId)
+    const returnedIdea = await getIdea(id, userId)
 
     // Return the selected idea
     res.status(200).json(returnedIdea);
@@ -129,10 +136,10 @@ router.delete("/:ideaId", async (req, res) => {
   }
 });
 
-// list all ideas (sort by popularity)
+// list all ideas (sort by best)
 router.get("/best", async (req, res) => {
   try {
-    const ideasList = await prisma.vote.groupBy({
+    const ideasOrder = await prisma.vote.groupBy({
       by: ["ideaId"],
 
       where: {
@@ -149,6 +156,17 @@ router.get("/best", async (req, res) => {
         },
       },
     });
+
+    var ideasList = [];
+
+    const userId = Number(req.signedCookies.userId);
+    for (const i in ideasOrder) {
+      const id = ideasOrder[i]._count.ideaId
+      const idea = await getIdea(id, userId)
+
+      ideasList.push(idea);
+
+    }
 
     // Return the selected user
     res.status(200).json(ideasList);
@@ -212,7 +230,6 @@ router.get("/latest", async (req, res) => {
           voteType: true,
         },
       });
-      console.log(vote)
 
       const returnedIdea = {
         ideaData: selectedIdea,
@@ -237,17 +254,34 @@ router.get("/latest", async (req, res) => {
 // list all ideas (sort by worst)
 router.get("/worst", async (req, res) => {
   try {
-    const ideasList = await prisma.idea.findMany({
-      include: {
-        votes: {
-          where: {
-            userId: Number(req.signedCookies.userId),
-          },
+    const ideasOrder = await prisma.vote.groupBy({
+      by: ["ideaId"],
+
+      where: {
+        voteType: true,
+      },
+
+      _count: {
+        ideaId: true,
+      },
+
+      orderBy: {
+        _count: {
+          ideaId: "desc",
         },
       },
     });
 
-    // Return the selected user
+    var ideasList = [];
+
+    const userId = Number(req.signedCookies.userId);
+    for (const i in ideasOrder) {
+      const id = ideasOrder[i]._count.ideaId;
+      const idea = await getIdea(id, userId)
+
+      ideasList.push(idea);
+
+    }
     res.status(200).json(ideasList);
   } catch (e) {
     res.status(400).json("Erro!");
