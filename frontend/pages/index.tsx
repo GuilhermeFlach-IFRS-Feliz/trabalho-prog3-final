@@ -3,27 +3,30 @@ import Head from "next/head";
 import { parseCookies } from "nookies";
 import { useContext } from "react";
 import Ideas from "../components/ideas";
+import { Container } from "../components/styled/Container.styled";
 import { AuthContext } from "../contexts/AuthContext";
 import styles from "../styles/Home.module.css";
-import Idea from "../types/Idea";
 
 const Home: NextPage = () => {
   const { user } = useContext(AuthContext);
 
   return (
-    <div className={styles.container}>
+    <Container>
       <Head>
         <title>Ideas</title>
         <meta name="description" content="gamer ideas" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <p>Olá {user?.username}</p>
+      {/*    HEADER?     */}
 
-      <main className={styles.main}>
+      <Container>
+        <p>Olá {user?.username}</p>
         <Ideas></Ideas>
-      </main>
-    </div>
+      </Container>
+
+      {/*    FOOTER?     */}
+    </Container>
   );
 };
 
