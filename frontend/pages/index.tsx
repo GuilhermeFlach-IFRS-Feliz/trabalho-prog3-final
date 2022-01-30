@@ -6,24 +6,26 @@ import Ideas from "../components/ideas";
 import { AuthContext } from "../contexts/AuthContext";
 import styles from "../styles/Home.module.css";
 import Idea from "../types/Idea";
+import { WelcomeHeader } from "../component_styles/Header.style";
+import { Container } from "../component_styles/Sections.style";
 
 const Home: NextPage = () => {
   const { user } = useContext(AuthContext);
 
   return (
-    <div className={styles.container}>
+    <Container>
       <Head>
         <title>Ideas</title>
         <meta name="description" content="gamer ideas" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <p>Olá {user?.username}</p>
+      <WelcomeHeader>Olá {user?.username}</WelcomeHeader>
 
       <main className={styles.main}>
         <Ideas></Ideas>
       </main>
-    </div>
+    </Container>
   );
 };
 
