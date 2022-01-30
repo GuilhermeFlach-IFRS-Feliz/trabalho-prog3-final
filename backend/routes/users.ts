@@ -9,6 +9,31 @@ const prisma = new PrismaClient();
 router.post("/create", async (req, res) => {
   try {
     const { username, email, password } = req.body;
+
+     // Verify if usernamealready exists:
+     const checkEmail = await prisma.user.findUnique({
+      where : {
+        email : email
+      }
+    });
+
+    if (checkEmail) {
+      return res.status(409).json("Email already in use.");
+
+    }
+
+
+    // Verify if usernamealready exists:
+    const checkUsername = await prisma.user.findUnique({
+      where : {
+        username : username
+      }
+    });
+
+    if (checkUsername) {
+      return res.status(409).json("Username already taken.");
+    }
+
     const user = await prisma.user.create({
       data: {
         username: username,
@@ -20,7 +45,7 @@ router.post("/create", async (req, res) => {
     // Return the created user
     res.status(200).json(user);
   } catch (e) {
-    res.status(400).json("Erro!");
+    res.status(500).json("Erro no Servidor!");
     console.log(e);
   }
 });
