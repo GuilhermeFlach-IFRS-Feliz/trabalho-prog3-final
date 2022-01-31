@@ -6,8 +6,8 @@ import Ideas from "../components/ideas";
 import { AuthContext } from "../contexts/AuthContext";
 import styles from "../styles/Home.module.css";
 import Idea from "../types/Idea";
-import { WelcomeHeader } from "../component_styles/Header.style";
-import { Container } from "../component_styles/Sections.style";
+import { WelcomeHeader } from "../components/styled/Header.style";
+import { Container } from "../components/styled/Sections.style";
 
 const Home: NextPage = () => {
   const { user } = useContext(AuthContext);
@@ -21,10 +21,7 @@ const Home: NextPage = () => {
       </Head>
 
       <WelcomeHeader>Olá {user?.username}</WelcomeHeader>
-
-      <main className={styles.main}>
         <Ideas></Ideas>
-      </main>
     </Container>
   );
 };
