@@ -4,10 +4,8 @@ import { parseCookies } from "nookies";
 import { useContext } from "react";
 import Ideas from "../components/ideas";
 import { AuthContext } from "../contexts/AuthContext";
-import styles from "../styles/Home.module.css";
-import Idea from "../types/Idea";
-import { WelcomeHeader } from "../components/styled/Header.style";
-import { Container } from "../components/styled/Sections.style";
+import { WelcomeHeader } from "../components/styled/Header.styled";
+import { Container, IdeasContainer, Footer } from "../components/styled/Sections.styled";
 
 const Home: NextPage = () => {
   const { user } = useContext(AuthContext);
@@ -21,7 +19,11 @@ const Home: NextPage = () => {
       </Head>
 
       <WelcomeHeader>Olá {user?.username}</WelcomeHeader>
+
+      <IdeasContainer>
         <Ideas></Ideas>
+      </IdeasContainer>
+      <Footer>Teste</Footer>
     </Container>
   );
 };

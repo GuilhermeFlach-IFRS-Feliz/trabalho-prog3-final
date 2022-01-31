@@ -1,4 +1,4 @@
-export default interface Idea {
+export default interface IdeaType {
   ideaData : {
     id: number;
     title: string;

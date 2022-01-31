@@ -72,7 +72,7 @@ async function getIdea (id : number, userId : number) {
 // Create Idea
 router.post("/create", async (req, res) => {
   try {
-    const { title, text, userId } = req.body;
+    const { title, text } = req.body;
     const idea = await prisma.idea.create({
       data: {
         title: title,

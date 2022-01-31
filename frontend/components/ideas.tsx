@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { fetchIdeas, ideaSorting } from "../helpers/ideas";
 import TIdea from "../types/Idea";
-import Idea from "./idea";
+import IdeaType from "./idea";
 
 const Ideas = () => {
   const [ideas, setIdeas] = useState<TIdea[]>([]);
@@ -19,7 +19,7 @@ const Ideas = () => {
   return (
     <>
       {ideas.length &&
-        ideas.map((idea) => <Idea key={idea.ideaData.id} self={idea}></Idea>)}
+        ideas.map((idea) => <IdeaType key={idea.ideaData.id} self={idea}></IdeaType>)}
     </>
   );
 };

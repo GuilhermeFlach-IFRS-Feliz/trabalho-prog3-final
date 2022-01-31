@@ -10,7 +10,7 @@ router.post("/create", async (req, res) => {
   try {
     const { username, email, password } = req.body;
 
-     // Verify if usernamealready exists:
+     // Verify if email isn't taken:
      const checkEmail = await prisma.user.findUnique({
       where : {
         email : email
@@ -22,8 +22,7 @@ router.post("/create", async (req, res) => {
 
     }
 
-
-    // Verify if usernamealready exists:
+    // Verify if username isnt taken
     const checkUsername = await prisma.user.findUnique({
       where : {
         username : username

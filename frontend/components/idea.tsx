@@ -1,6 +1,6 @@
 import { getCookieParser } from "next/dist/server/api-utils";
 import { castVote } from "../helpers/votes";
-import Idea from "../types/Idea";
+import IdeaType from "../types/Idea";
 import { StyledIdea } from "./styled/idea.styled";
 
 const Idea = ({ self }: Props) => {
@@ -33,7 +33,7 @@ const Idea = ({ self }: Props) => {
 };
 
 interface Props {
-  self: Idea;
+  self: IdeaType;
 }
 
 export default Idea;

@@ -4,6 +4,7 @@ import Router from "next/router";
 import { parseCookies } from "nookies";
 import { useContext, useState } from "react";
 import { AuthContext } from "../contexts/AuthContext";
+import { LoginContainer } from "../components/styled/Login.styled";
 
 const Login: NextPage = () => {
   const { login } = useContext(AuthContext);
@@ -16,7 +17,7 @@ const Login: NextPage = () => {
   }
 
   return (
-    <div>
+    <LoginContainer>
       <Head>
         <title>Ideas - Login</title>
         <meta name="description" content="gamer ideas login" />
@@ -34,7 +35,7 @@ const Login: NextPage = () => {
         onChange={(e) => setPassword(e.target.value)}
       />
       <button onClick={submit}>Login</button>
-    </div>
+    </LoginContainer>
   );
 };
 
