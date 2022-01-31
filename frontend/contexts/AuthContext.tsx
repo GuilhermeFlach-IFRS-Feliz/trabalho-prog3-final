@@ -1,6 +1,5 @@
 import { createContext, useEffect, useState } from "react";
 import { parseCookies } from "nookies";
-import Router from "next/router";
 import axios from "../helpers/axios";
 
 export const AuthContext = createContext({} as AuthContextValue);
@@ -39,8 +38,21 @@ export const AuthContextProvider = ({
     return true;
   }
 
+  async function createAccount(
+    username: string,
+    email: string,
+    password: string
+  ): Promise<string | boolean> {
+    try {
+      await axios.post("/users/create", { username, password, email });
+      return await login(username, password);
+    } catch (error: any) {
+      return (error.response.data as string) || ""; //axios error payload
+    }
+  }
+
   return (
-    <AuthContext.Provider value={{ user, login }}>
+    <AuthContext.Provider value={{ user, login, createAccount }}>
       {children}
     </AuthContext.Provider>
   );
@@ -54,4 +66,9 @@ interface User {
 interface AuthContextValue {
   user: User | null;
   login: (username: string, password: string) => Promise<boolean>;
+  createAccount: (
+    username: string,
+    email: string,
+    password: string
+  ) => Promise<boolean | string>;
 }
