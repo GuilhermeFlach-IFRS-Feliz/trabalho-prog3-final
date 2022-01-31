@@ -20,7 +20,7 @@ instance.interceptors.response.use(
     //   const previousRequest = error.config;
     //   return previousRequest ? instance.request(previousRequest) : undefined;
     // }
-    return error;
+    throw error;
   }
 );
 
