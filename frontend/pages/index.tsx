@@ -3,12 +3,21 @@ import Head from "next/head";
 import { parseCookies } from "nookies";
 import { useContext } from "react";
 import Ideas from "../components/ideas";
-import { AuthContext } from "../contexts/AuthContext";
-import { WelcomeHeader } from "../components/styled/Header.styled";
+import Router from "next/router";
+import { AuthContext} from "../contexts/AuthContext";
+import { WelcomeHeader, LogoutButton} from "../components/styled/Header.styled";
 import { Container, IdeasContainer } from "../components/styled/Sections.styled";
 
 const Home: NextPage = () => {
-  const { user } = useContext(AuthContext);
+  const { user, logout } = useContext(AuthContext);
+
+  // function for logging the user out
+  async function endSession() {
+    const response = await logout();
+
+    if (response === true) location.reload();
+  
+  }
 
   return (
     <Container>
@@ -18,8 +27,7 @@ const Home: NextPage = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <WelcomeHeader>Olá {user?.username}</WelcomeHeader>
-
+      <WelcomeHeader>Logado como {user?.username} ({user?.email}) <LogoutButton onClick={endSession}>Sair</LogoutButton></WelcomeHeader>
       <IdeasContainer>
         <Ideas></Ideas>
       </IdeasContainer>

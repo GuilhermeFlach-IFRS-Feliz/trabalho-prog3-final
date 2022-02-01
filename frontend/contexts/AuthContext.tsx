@@ -1,5 +1,5 @@
 import { createContext, useEffect, useState } from "react";
-import { parseCookies } from "nookies";
+import { parseCookies, destroyCookie } from "nookies";
 import axios from "../helpers/axios";
 
 export const AuthContext = createContext({} as AuthContextValue);
@@ -38,6 +38,17 @@ export const AuthContextProvider = ({
     return true;
   }
 
+  async function logout() {
+    try {
+      destroyCookie(undefined, "username");
+      destroyCookie(undefined, "email");
+      destroyCookie(undefined, "userId");
+    } catch (error) {
+      return false;
+    }
+    return true;
+  } 
+
   async function createAccount(
     username: string,
     email: string,
@@ -52,7 +63,7 @@ export const AuthContextProvider = ({
   }
 
   return (
-    <AuthContext.Provider value={{ user, login, createAccount }}>
+    <AuthContext.Provider value={{ user, login, createAccount, logout }}>
       {children}
     </AuthContext.Provider>
   );
@@ -71,4 +82,5 @@ interface AuthContextValue {
     email: string,
     password: string
   ) => Promise<boolean | string>;
+  logout: () => Promise<boolean>;
 }

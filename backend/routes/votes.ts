@@ -28,7 +28,6 @@ router.use(session);
 router.post("/cast", async (req, res) => {
   try {
     const { ideaId, voteType } = req.body;
-
     const castVote = await prisma.vote.upsert({
       where: {
         voteId: {

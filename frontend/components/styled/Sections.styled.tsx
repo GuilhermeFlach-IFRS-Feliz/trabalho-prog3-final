@@ -20,7 +20,7 @@ export const ImageLogoText = styled.img.attrs(props => ({
     src : "/lidealogo_text.png"
 }))`
   height: 64px;
-`;
+`
 
 export const ImageLogo = styled.img.attrs(props => ({
     src : "/lidealogo.png"
