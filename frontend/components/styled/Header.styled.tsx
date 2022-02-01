@@ -2,7 +2,7 @@ import styled from 'styled-components';
 
 export const WelcomeHeader = styled.div`
     width: 100%;
-    background-color: #4a148c;
+    background-color: #ff6f00;
     color: #fafafa;
     font-weight: bold;
     text-align: center;
@@ -12,7 +12,7 @@ export const WelcomeHeader = styled.div`
 
 export const MainHeader = styled.div`
     width: 100%;
-    background-color: #aa00ff;
+    background-color: #ff6f00;
     color: #fafafa;
     font-weight: bold;
     text-align: center;

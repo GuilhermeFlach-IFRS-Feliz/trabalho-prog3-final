@@ -5,7 +5,7 @@ import { useContext } from "react";
 import Ideas from "../components/ideas";
 import { AuthContext } from "../contexts/AuthContext";
 import { WelcomeHeader } from "../components/styled/Header.styled";
-import { Container, IdeasContainer, Footer } from "../components/styled/Sections.styled";
+import { Container, IdeasContainer } from "../components/styled/Sections.styled";
 
 const Home: NextPage = () => {
   const { user } = useContext(AuthContext);
@@ -23,7 +23,6 @@ const Home: NextPage = () => {
       <IdeasContainer>
         <Ideas></Ideas>
       </IdeasContainer>
-      <Footer>Teste</Footer>
     </Container>
   );
 };

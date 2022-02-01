@@ -4,7 +4,8 @@ import Router from "next/router";
 import { parseCookies } from "nookies";
 import { useContext, useState } from "react";
 import { AuthContext } from "../contexts/AuthContext";
-import { LoginContainer } from "../components/styled/Login.styled";
+import { LoginButton, LoginButtonsContainer, LoginContainer, LoginErrorMessage, LoginField, LoginFieldsContainer } from "../components/styled/Login.styled";
+import { Container, ImageLogoText, ImageLogo } from "../components/styled/Sections.styled";
 
 const Login: NextPage = () => {
   const { login, createAccount } = useContext(AuthContext);
@@ -38,38 +39,50 @@ const Login: NextPage = () => {
   }
 
   return (
-    <LoginContainer>
+    <Container>
       <Head>
         <title>Ideas - Login</title>
         <meta name="description" content="gamer ideas login" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      {isCreatingNewAccount && (
-        <input
-          type="text"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-        />
-      )}
-      <input
-        type="text"
-        value={username}
-        onChange={(e) => setUsername(e.target.value)}
-      />
-      <input
-        type="password"
-        value={password}
-        onChange={(e) => setPassword(e.target.value)}
-      />
-      <button onClick={submit}>Login</button>
-      <button onClick={() => setIsCreatingNewAccount(!isCreatingNewAccount)}>
-        {isCreatingNewAccount
-          ? "Fazer login em uma conta existente"
-          : "Criar uma conta em vez disso"}
-      </button>
-      {error}
-    </LoginContainer>
+      <LoginContainer>
+        <ImageLogo></ImageLogo>
+        <LoginFieldsContainer>
+          {isCreatingNewAccount && (
+            <LoginField
+              type="text"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              placeholder="Email"
+            />
+          )}
+          <LoginField
+            type="text"
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
+            placeholder="Nome de Usuário"
+          />
+          <LoginField
+            type="password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            placeholder="Senha"
+          />
+        </LoginFieldsContainer>
+        <LoginButtonsContainer>
+          <LoginButton onClick={submit}>{isCreatingNewAccount
+              ? "Criar conta"
+              : "Login"}</LoginButton>
+          <LoginButton onClick={() => setIsCreatingNewAccount(!isCreatingNewAccount)}>
+            {isCreatingNewAccount
+              ? "Fazer login em uma conta existente"
+              : "Criar uma conta em vez disso"}
+          </LoginButton>
+        </LoginButtonsContainer>
+        <LoginErrorMessage>{isCreatingNewAccount ? "" : error}</LoginErrorMessage>
+      </LoginContainer>
+    </Container>
   );
 };
 
