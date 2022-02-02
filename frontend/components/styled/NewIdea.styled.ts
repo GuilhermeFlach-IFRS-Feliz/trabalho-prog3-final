@@ -43,5 +43,6 @@ export const StyledNewIdea = styled.div`
 
   button:hover {
     cursor: pointer;
+    filter: brightness(1.2);
   }
 `;

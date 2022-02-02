@@ -64,6 +64,7 @@ export const LoginButton = styled.button`
 
     &:hover {
         filter: brightness(1.2);
+        cursor: pointer;
     }
 
     &:active {

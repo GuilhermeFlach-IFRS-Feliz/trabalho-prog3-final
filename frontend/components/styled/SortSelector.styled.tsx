@@ -30,6 +30,7 @@ export const SortButton = styled.button<SortButtonProps>`
 
     &:hover {
         filter: brightness(2);
+        cursor: pointer;
     }
 
     &:active {

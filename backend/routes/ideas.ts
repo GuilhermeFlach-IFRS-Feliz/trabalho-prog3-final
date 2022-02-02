@@ -153,7 +153,7 @@ router.get("/best", async (req, res) => {
 
       orderBy: {
         _count: {
-          ideaId: "asc",
+          ideaId: "desc",
         },
       },
     });
@@ -214,7 +214,7 @@ router.get("/worst", async (req, res) => {
 
       orderBy: {
         _count: {
-          ideaId: "asc",
+          ideaId: "desc",
         },
       },
     });

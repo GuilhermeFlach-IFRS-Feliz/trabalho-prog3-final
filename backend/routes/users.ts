@@ -18,7 +18,7 @@ router.post("/create", async (req, res) => {
     });
 
     if (checkEmail) {
-      return res.status(409).json("Email already in use.");
+      return res.status(409).json("Email já em uso.");
 
     }
 
@@ -30,7 +30,7 @@ router.post("/create", async (req, res) => {
     });
 
     if (checkUsername) {
-      return res.status(409).json("Username already taken.");
+      return res.status(409).json("Já existe um usuário com este nome.");
     }
 
     const user = await prisma.user.create({

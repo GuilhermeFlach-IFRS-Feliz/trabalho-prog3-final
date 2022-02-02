@@ -69,6 +69,7 @@ export const VoteButton = styled.button`
 
   &:hover {
         filter: brightness(1.4);
+        cursor: pointer;
     }
 
     &:active {
@@ -88,6 +89,7 @@ export const DeleteButton = styled.button`
 
   &:hover {
         filter: brightness(1.2);
+        cursor: pointer;
   }
 
   &:active {

@@ -40,6 +40,7 @@ const Ideas = ({
 
   return (
     <>
+      {refetch ? "" : ""}
       {ideas.length &&
         ideas.map((idea, i) => (
           <IdeaType

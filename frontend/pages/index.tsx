@@ -46,6 +46,17 @@ const Home: NextPage = () => {
         <LogoutButton onClick={endSession}>Sair</LogoutButton>
       </WelcomeHeader>
       <SortSelector>
+      <SortButton
+          selected={sorting == ideaSorting.latest}
+          onClick={() => {
+            _setSorting(ideaSorting.latest);
+          }}
+        >
+          {" "}
+          <MdHourglassBottom></MdHourglassBottom>
+          <span>Mais Recentes</span>
+        </SortButton>
+
         <SortButton
           selected={sorting == ideaSorting.best}
           onClick={() => {
@@ -66,16 +77,6 @@ const Home: NextPage = () => {
           <span>Piores</span>
         </SortButton>
 
-        <SortButton
-          selected={sorting == ideaSorting.latest}
-          onClick={() => {
-            _setSorting(ideaSorting.latest);
-          }}
-        >
-          {" "}
-          <MdHourglassBottom></MdHourglassBottom>
-          <span>Mais Recentes</span>
-        </SortButton>
       </SortSelector>
 
       <NewIdea setRefetch={setRefetch}></NewIdea>
