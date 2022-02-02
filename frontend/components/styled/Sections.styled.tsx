@@ -14,7 +14,8 @@ export const Container = styled.div`
 export const IdeasContainer = styled.div`
   width: 80%;
   flex: 1;
-  border: 1px solid red;
+  border-radius: 6px;
+  background-color: rgba(0,0,0,0.3);
 
   display: flex;
   flex-flow: row wrap;

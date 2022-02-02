@@ -4,18 +4,9 @@ import { useContext, useState } from "react";
 import { AuthContext } from "../contexts/AuthContext";
 import { castVote } from "../helpers/votes";
 import IdeaType from "../types/Idea";
-import {
-  StyledIdea,
-  IdeaTitle,
-  IdeaText,
-  IdeaButtonsWrapper,
-  IdeaVoteCount,
-  VoteButton,
-  IdeaUser,
-} from "./styled/Idea.styled";
-import { findIdea } from "../helpers/ideas";
+import { StyledIdea, IdeaTitle, IdeaText, IdeaButtonsWrapper, IdeaVoteCount, VoteButton, IdeaUser, DeleteButton } from "./styled/Idea.styled";
 
-const Idea = ({ self, deleteSelf, index, updateSelf }: Props) => {
+const Idea = ({ self, deleteSelf, index }: Props) => {
   const { user } = useContext(AuthContext);
   const [vote, setVote] = useState<boolean | undefined>(
     self.voteData ? self.voteData.voteType : undefined
@@ -24,10 +15,7 @@ const Idea = ({ self, deleteSelf, index, updateSelf }: Props) => {
   async function Vote(type: boolean) {
     if (type === vote) return;
 
-    //cast vote and then update self with up to date data
-    await castVote(type, self.ideaData.id);
-    const { data: updatedSelf } = await findIdea(self.ideaData.id);
-    updateSelf(index, updatedSelf);
+    castVote(type, self.ideaData.id);
     setVote(type);
   }
 
@@ -38,34 +26,29 @@ const Idea = ({ self, deleteSelf, index, updateSelf }: Props) => {
       <IdeaUser>Por: {self.ideaData.user.username}</IdeaUser>
 
       <IdeaText> {self.ideaData.text}</IdeaText>
-      <IdeaVoteCount>
-        {" "}
-        <MdArrowCircleUp></MdArrowCircleUp>{" "}
-        <span>
-          {self.voteData.upvotes} | {self.voteData.downvotes}
-        </span>{" "}
-        <MdArrowCircleDown></MdArrowCircleDown>{" "}
-      </IdeaVoteCount>
+      
+      {user?.username === self.ideaData.user.username && (
+        <DeleteButton onClick={() => deleteSelf(index, self.ideaData.id)}>
+          Deletar
+        </DeleteButton>
+      )}
+
+      <IdeaVoteCount> <MdArrowCircleUp></MdArrowCircleUp> <span>{self.voteData.upvotes} | {self.voteData.downvotes}</span> <MdArrowCircleDown></MdArrowCircleDown> </IdeaVoteCount>
       <IdeaButtonsWrapper>
-        {user?.username === self.ideaData.user.username && (
-          <button onClick={() => deleteSelf(index, self.ideaData.id)}>
-            Deletar
-          </button>
-        )}
-        <p>{self.ideaData.title}</p>
-        <p>{self.ideaData.text}</p>
-        <VoteButton
-          onClick={() => Vote(true)}
-          style={vote === true ? { backgroundColor: "#53F23D" } : {}}
-        >
-          Gostei
-        </VoteButton>
-        <VoteButton
-          onClick={() => Vote(false)}
-          style={vote === false ? { backgroundColor: "#FA454D" } : {}}
-        >
-          Não Gostei
-        </VoteButton>
+      
+
+      <VoteButton
+        onClick={() => Vote(true)}
+        style={vote === true ? { backgroundColor: "#53F23D" } : {}}
+      >
+        Gostei
+      </VoteButton>
+      <VoteButton
+        onClick={() => Vote(false)}
+        style={vote === false ? { backgroundColor: "#FA454D" } : {}}
+      >
+        Não Gostei
+      </VoteButton>
       </IdeaButtonsWrapper>
     </StyledIdea>
   );
@@ -75,7 +58,6 @@ interface Props {
   self: IdeaType;
   deleteSelf: (i: number, id: number) => void;
   index: number;
-  updateSelf: (i: number, self: IdeaType) => void;
 }
 
 export default Idea;

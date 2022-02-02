@@ -6,7 +6,7 @@ export const StyledIdea = styled.div`
   align-items: center;
   justify-content: space-between;
 
-  background-color: aliceblue;
+  background-color: #fff9c4;
   border-radius: 5px;
   margin-top: 10px;
   height: 500px;
@@ -18,20 +18,21 @@ export const StyledIdea = styled.div`
 export const IdeaTitle = styled.p`
   font-weight: bold;
   text-align: center;
-  height: 15px;
+  margin-bottom: 0px;
 `;
 
 export const IdeaUser = styled.p`
-  font-weight: bold;
+  font-style: italic;
+  font-weight: lighter;
   text-align: center;
 
-  height: 15px;
+  margin-top: 0px;
+  margin-bottom: 5px
 `;
 
 
 export const IdeaText = styled.p`
   flex:1;
-  border: 1px solid red;
   text-align: justify;
 `;
 
@@ -43,8 +44,8 @@ export const IdeaVoteCount = styled.p`
   padding: 0px 5px;
 
   overflow: hidden;
-  height: 20px;
-  
+  margin-bottom: 0px;
+  margin-top: 5px;  
   span {
     line-height: 20px;
     vertical-align: middle;
@@ -62,7 +63,34 @@ export const IdeaButtonsWrapper = styled.p`
 export const VoteButton = styled.button`
   border: 2px solid #ffab00;
   background-color: #ffe0b2;
-  padding: 3px 5px;
+  padding: 7px 12px;
+  border-radius: 7px;
   margin: 3px;
+
+  &:hover {
+        filter: brightness(1.4);
+    }
+
+    &:active {
+        filter: brightness(0.7);
+    }
   
+`;
+
+export const DeleteButton = styled.button`
+  background-color: #b71c1c;
+  color: #fdfdfd;
+  padding: 7px 12px;
+  border-radius: 7px;
+  border:none;
+
+  margin-bottom: 50px;
+
+  &:hover {
+        filter: brightness(1.2);
+  }
+
+  &:active {
+      filter: brightness(0.7);
+  }
 `;
