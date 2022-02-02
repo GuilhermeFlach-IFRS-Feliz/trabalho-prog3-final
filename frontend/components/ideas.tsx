@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { fetchIdeas, ideaSorting } from "../helpers/ideas";
+import { deleteIdea, fetchIdeas, ideaSorting } from "../helpers/ideas";
 import TIdea from "../types/Idea";
 import IdeaType from "./idea";
 
@@ -15,10 +15,26 @@ const Ideas = ({sorting} : {sorting : ideaSorting}) => {
     fetch();
   }, [sorting]); //re-fetch every time sorting updates
 
+  function DeleteIdea(i: number, id: number) {
+    deleteIdea(id);
+    setIdeas((prevIdeas) => {
+      const newIdeas = [...prevIdeas];
+      newIdeas.splice(i, 1);
+      return newIdeas;
+    });
+  }
+
   return (
     <>
       {ideas.length &&
-        ideas.map((idea) => <IdeaType key={idea.ideaData.id} self={idea}></IdeaType>)}
+        ideas.map((idea, i) => (
+          <IdeaType
+            key={idea.ideaData.id}
+            self={idea}
+            deleteSelf={DeleteIdea}
+            index={i}
+          ></IdeaType>
+        ))}
     </>
   );
 };
