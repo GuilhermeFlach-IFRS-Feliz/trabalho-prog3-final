@@ -3,7 +3,13 @@ import { deleteIdea, fetchIdeas, ideaSorting } from "../helpers/ideas";
 import TIdea from "../types/Idea";
 import IdeaType from "./idea";
 
-const Ideas = ({sorting} : {sorting : ideaSorting}) => {
+const Ideas = ({
+  sorting,
+  refetch,
+}: {
+  sorting: ideaSorting;
+  refetch: boolean;
+}) => {
   const [ideas, setIdeas] = useState<TIdea[]>([]);
 
   useEffect(() => {
@@ -13,13 +19,21 @@ const Ideas = ({sorting} : {sorting : ideaSorting}) => {
       setIdeas(data);
     }
     fetch();
-  }, [sorting]); //re-fetch every time sorting updates
+  }, [sorting, refetch]); //re-fetch every time sorting updates
 
   function DeleteIdea(i: number, id: number) {
     deleteIdea(id);
     setIdeas((prevIdeas) => {
       const newIdeas = [...prevIdeas];
       newIdeas.splice(i, 1);
+      return newIdeas;
+    });
+  }
+
+  function updateSelf(i: number, newSelf: TIdea) {
+    setIdeas((prevIdeas) => {
+      const newIdeas = [...prevIdeas];
+      newIdeas[i] = newSelf;
       return newIdeas;
     });
   }
@@ -33,6 +47,7 @@ const Ideas = ({sorting} : {sorting : ideaSorting}) => {
             self={idea}
             deleteSelf={DeleteIdea}
             index={i}
+            updateSelf={updateSelf}
           ></IdeaType>
         ))}
     </>
