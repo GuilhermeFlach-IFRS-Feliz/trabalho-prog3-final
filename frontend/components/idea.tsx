@@ -4,7 +4,7 @@ import { useContext, useState } from "react";
 import { AuthContext } from "../contexts/AuthContext";
 import { castVote } from "../helpers/votes";
 import IdeaType from "../types/Idea";
-import { StyledIdea, IdeaTitle, IdeaText, IdeaButtonsWrapper, IdeaVoteCount, VoteButton, IdeaUser } from "./styled/Idea.styled";
+import { StyledIdea, IdeaTitle, IdeaText, IdeaButtonsWrapper, IdeaVoteCount, VoteButton, IdeaUser, DeleteButton } from "./styled/Idea.styled";
 
 const Idea = ({ self, deleteSelf, index }: Props) => {
   const { user } = useContext(AuthContext);
@@ -23,14 +23,14 @@ const Idea = ({ self, deleteSelf, index }: Props) => {
     <StyledIdea>
       <IdeaTitle>{self.ideaData.title}</IdeaTitle>
       
-      <IdeaUser>{self.ideaData.user.username}</IdeaUser>
+      <IdeaUser>Por: {self.ideaData.user.username}</IdeaUser>
 
       <IdeaText> {self.ideaData.text}</IdeaText>
       
       {user?.username === self.ideaData.user.username && (
-        <button onClick={() => deleteSelf(index, self.ideaData.id)}>
+        <DeleteButton onClick={() => deleteSelf(index, self.ideaData.id)}>
           Deletar
-        </button>
+        </DeleteButton>
       )}
 
       <IdeaVoteCount> <MdArrowCircleUp></MdArrowCircleUp> <span>{self.voteData.upvotes} | {self.voteData.downvotes}</span> <MdArrowCircleDown></MdArrowCircleDown> </IdeaVoteCount>

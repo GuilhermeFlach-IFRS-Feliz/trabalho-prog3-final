@@ -139,7 +139,6 @@ router.delete("/:ideaId", async (req, res) => {
 // list all ideas (sort by best)
 router.get("/best", async (req, res) => {
   try {
-
     // Get the ones that have at least one upvote and order by the most upvotes
     const ideasOrder = await prisma.vote.groupBy({
       by: ["ideaId"],
@@ -174,18 +173,20 @@ router.get("/best", async (req, res) => {
 
     const userId = Number(req.signedCookies.userId);
     for (const i in ideasOrder) {
-      const id = ideasOrder[i]._count.ideaId
-      const idea = await getIdea(id, userId)
+      const id = ideasOrder[i].ideaId;
+      const idea = await getIdea(id, userId);
 
       ideasList.push(idea);
     }
 
     for (const i in ideasOrder2) {
       const id = ideasOrder2[i].id;
-      const idea = await getIdea(id, userId)
+      const idea = await getIdea(id, userId);
 
       ideasList.push(idea);
     }
+
+    console.log(ideasList)
 
     // Return the selected user
     res.status(200).json(ideasList);
@@ -233,15 +234,15 @@ router.get("/worst", async (req, res) => {
 
     const userId = Number(req.signedCookies.userId);
     for (const i in ideasOrder) {
-      const id = ideasOrder[i]._count.ideaId
-      const idea = await getIdea(id, userId)
+      const id = ideasOrder[i].ideaId;
+      const idea = await getIdea(id, userId);
 
       ideasList.push(idea);
     }
 
     for (const i in ideasOrder2) {
       const id = ideasOrder2[i].id;
-      const idea = await getIdea(id, userId)
+      const idea = await getIdea(id, userId);
 
       ideasList.push(idea);
     }

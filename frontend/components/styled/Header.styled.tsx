@@ -22,7 +22,7 @@ export const WelcomeHeader = styled.div`
 `
 
 export const LogoutButton = styled.button`
-    background-color: #d50000;
+    background-color: #b71c1c;
     color: #fafafa;
     border: none;
 
