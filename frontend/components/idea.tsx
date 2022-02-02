@@ -22,18 +22,21 @@ const Idea = ({ self, deleteSelf, index }: Props) => {
   return (
     <StyledIdea>
       <IdeaTitle>{self.ideaData.title}</IdeaTitle>
+      
       <IdeaUser>{self.ideaData.user.username}</IdeaUser>
+
       <IdeaText> {self.ideaData.text}</IdeaText>
-      <IdeaVoteCount> <MdArrowCircleUp></MdArrowCircleUp> <span>{self.voteData.upvotes} | {self.voteData.downvotes}</span> <MdArrowCircleDown></MdArrowCircleDown> </IdeaVoteCount>
-      <IdeaButtonsWrapper>
       
       {user?.username === self.ideaData.user.username && (
         <button onClick={() => deleteSelf(index, self.ideaData.id)}>
           Deletar
         </button>
       )}
-      <p>{self.ideaData.title}</p>
-      <p>{self.ideaData.text}</p>
+
+      <IdeaVoteCount> <MdArrowCircleUp></MdArrowCircleUp> <span>{self.voteData.upvotes} | {self.voteData.downvotes}</span> <MdArrowCircleDown></MdArrowCircleDown> </IdeaVoteCount>
+      <IdeaButtonsWrapper>
+      
+
       <VoteButton
         onClick={() => Vote(true)}
         style={vote === true ? { backgroundColor: "#53F23D" } : {}}

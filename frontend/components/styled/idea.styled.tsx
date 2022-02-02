@@ -22,7 +22,8 @@ export const IdeaTitle = styled.p`
 `;
 
 export const IdeaUser = styled.p`
-  font-weight: bold;
+  font-style: italic;
+  font-weight: lighter;
   text-align: center;
 
   height: 15px;
@@ -31,7 +32,6 @@ export const IdeaUser = styled.p`
 
 export const IdeaText = styled.p`
   flex:1;
-  border: 1px solid red;
   text-align: justify;
 `;
 
