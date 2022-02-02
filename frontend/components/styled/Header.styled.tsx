@@ -13,8 +13,8 @@ export const MainHeader = styled.div`
 
 export const WelcomeHeader = styled.div`
     width: 100%;
-    background-color: #ff8f00;
-    color: #fcfcfc;
+    background-color: #e65100;
+    color: #ffffff;
     font-weight: bold;
     text-align: right;
     padding: 7px 15px;

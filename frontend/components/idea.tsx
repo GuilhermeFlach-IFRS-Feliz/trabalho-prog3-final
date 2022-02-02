@@ -1,7 +1,8 @@
 import { getCookieParser } from "next/dist/server/api-utils";
+import { MdArrowCircleDown, MdArrowCircleUp } from "react-icons/md";
 import { castVote } from "../helpers/votes";
 import IdeaType from "../types/Idea";
-import { StyledIdea } from "./styled/idea.styled";
+import { StyledIdea, IdeaTitle, IdeaText, IdeaButtonsWrapper, IdeaVoteCount, VoteButton, IdeaUser } from "./styled/Idea.styled";
 
 const Idea = ({ self }: Props) => {
   const vote = self.voteData ? self.voteData.voteType : undefined;
@@ -14,20 +15,24 @@ const Idea = ({ self }: Props) => {
 
   return (
     <StyledIdea>
-      <p>{self.ideaData.title}</p>
-      <p>{self.ideaData.text}</p>
-      <button
+      <IdeaTitle>{self.ideaData.title}</IdeaTitle>
+      <IdeaUser>{self.ideaData.user.username}</IdeaUser>
+      <IdeaText> {self.ideaData.text}</IdeaText>
+      <IdeaVoteCount> <MdArrowCircleUp></MdArrowCircleUp> <span>{self.voteData.upvotes} | {self.voteData.downvotes}</span> <MdArrowCircleDown></MdArrowCircleDown> </IdeaVoteCount>
+      <IdeaButtonsWrapper>
+      <VoteButton
         onClick={() => Vote(true)}
-        style={vote === true ? { backgroundColor: "blue" } : {}}
+        style={vote === true ? { backgroundColor: "#53F23D" } : {}}
       >
-        Like
-      </button>
-      <button
+        Gostei
+      </VoteButton>
+      <VoteButton
         onClick={() => Vote(false)}
-        style={vote === false ? { backgroundColor: "red" } : {}}
+        style={vote === false ? { backgroundColor: "#FA454D" } : {}}
       >
-        Dislike
-      </button>
+        Não Gostei
+      </VoteButton>
+      </IdeaButtonsWrapper>
     </StyledIdea>
   );
 };

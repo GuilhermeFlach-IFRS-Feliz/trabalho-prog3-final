@@ -3,9 +3,8 @@ import { fetchIdeas, ideaSorting } from "../helpers/ideas";
 import TIdea from "../types/Idea";
 import IdeaType from "./idea";
 
-const Ideas = () => {
+const Ideas = ({sorting} : {sorting : ideaSorting}) => {
   const [ideas, setIdeas] = useState<TIdea[]>([]);
-  const [sorting, _setSorting] = useState<ideaSorting>(ideaSorting.latest);
 
   useEffect(() => {
     async function fetch() {

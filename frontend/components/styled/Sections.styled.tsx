@@ -7,13 +7,20 @@ export const Container = styled.div`
     display: flex;
     flex-flow: column nowrap;
     align-items: center;
-    justify-content: center;
-    height: 85vh;
+    justify-content: space-around;
+    min-height: 85vh;
 `
 
 export const IdeasContainer = styled.div`
-    border: 1px solid red;
+    width: 80%;
     flex: 1;
+    border: 1px solid red;
+    
+    display: flex;
+    flex-flow: row wrap;
+    align-items: flex-start;
+    justify-content: space-around;
+    padding: 10px;
 `
 
 export const ImageLogoText = styled.img.attrs(props => ({
